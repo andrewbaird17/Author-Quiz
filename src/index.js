@@ -9,12 +9,27 @@ const authors = [
 		name: 'Mark Twain',
 		imageUrl: 'images/authors/marktwain.jpg',
 		imageSource: 'Wikipedia Commons',
-		books: ['The Adventures of Huckleberry Finn'],
+		books: ['The Adventures of Huckleberry Finn', 'Life on the Mississippi'],
 	},
 ];
 
 const state = {
 	turnData: {
+		// getTurnData(authors)
+		/* make function getTurnData(authors){
+			const allBooks = authors.reduce(function(p,c,i){
+				return p.concat(c.books);
+			}, []);
+			//  npm install underscore, import shuffle,sample
+			const fourRandomBooks= shuffle(allBooks).slice(0,4);
+			const answer = sample(fourRandomBooks)
+			
+			return {
+				books: fourRandomBooks,
+				author: authors.find((author) => author.books.some((title) => title === answer))
+			}
+		}
+		} */
 		author: authors[0],
 		books: authors[0].books,
 	},
