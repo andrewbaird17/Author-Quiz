@@ -34,10 +34,14 @@ const authors = [
 	},
 ];
 
-const state = {
-	turnData: getTurnData(authors),
-	highlight: '',
-};
+function resetState() {
+	return {
+		turnData: getTurnData(authors),
+		highlight: '',
+	};
+}
+
+let state = resetState();
 // getTurnData(authors)
 /* make function getTurnData(authors){
 			const allBooks = authors.reduce(function(p,c,i){
@@ -82,7 +86,16 @@ function onAnswerSelected(answer) {
 }
 
 function App() {
-	return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+	return (
+		<AuthorQuiz
+			{...state}
+			onAnswerSelected={onAnswerSelected}
+			onContinue={() => {
+				state = resetState();
+				render();
+			}}
+		/>
+	);
 }
 
 const AuthorWrapper = withRouter(({ history }) => (
