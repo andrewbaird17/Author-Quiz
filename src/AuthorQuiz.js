@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import './bootstrap.min.css';
 
@@ -39,6 +40,17 @@ function Turn({ author, books, highlight, onAnswerSelected }) {
 		</div>
 	);
 }
+Turn.propTypes = {
+	author: PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		imageUrl: PropTypes.string.isRequired,
+		imageSource: PropTypes.string.isRequired,
+		books: PropTypes.arrayOf(PropTypes.string).isRequired,
+	}),
+	books: PropTypes.arrayOf(PropTypes.string).isRequired,
+	onAnswerSelected: PropTypes.func.isRequired,
+	highlight: PropTypes.string.isRequired,
+};
 
 function Book({ title, onClick }) {
 	return (
