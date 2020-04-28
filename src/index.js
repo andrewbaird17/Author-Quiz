@@ -4,6 +4,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 import { shuffle, sample } from 'underscore';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
+import AddAuthorForm from './AddAuthorForm.js';
 import * as serviceWorker from './serviceWorker';
 
 const authors = [
@@ -80,17 +81,12 @@ function onAnswerSelected(answer) {
 	render();
 }
 
-function AddAuthorForm({ match }) {
-	return (
-		<div>
-			<h1>Add Author</h1>
-			<p>{JSON.stringify(match)}</p>
-		</div>
-	);
-}
-
 function App() {
 	return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+}
+
+function AuthorWrapper() {
+	return <AddAuthorForm onAddAuthor={console.log} />;
 }
 
 function render() {
@@ -99,7 +95,7 @@ function render() {
 			<BrowserRouter>
 				<React.Fragment>
 					<Route exact path="/" component={App} />
-					<Route path="/add" component={AddAuthorForm} />
+					<Route path="/add" component={AuthorWrapper} />
 				</React.Fragment>
 			</BrowserRouter>
 		</React.StrictMode>,
