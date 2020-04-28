@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Route, BrowserRouter } from 'react-router-dom';
+import { shuffle, sample } from 'underscore';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
 import * as serviceWorker from './serviceWorker';
@@ -11,13 +13,32 @@ const authors = [
 		imageSource: 'Wikipedia Commons',
 		books: ['The Adventures of Huckleberry Finn', 'Life on the Mississippi'],
 	},
+	{
+		name: 'J.K. Rowling',
+		imageUrl: 'images/authors/jkrowling.jpg',
+		imageSource: 'Wikipedia Commons',
+		books: ['The Half-Blood Prince'],
+	},
+	{
+		name: 'William Shakespeare',
+		imageUrl: 'images/authors/williamshakespeare.jpg',
+		imageSource: 'Wikipedia Commons',
+		books: ['Macbeth', 'Hamlet', 'King Lear'],
+	},
+	{
+		name: 'Stephen King',
+		imageUrl: 'images/authors/stephenking.jpg',
+		imageSource: 'Wikipedia Commons',
+		books: ['IT', 'Doctor Sleep', 'The Shining'],
+	},
 ];
 
 const state = {
-	turnData: {
-		//highlight: ''
-		// getTurnData(authors)
-		/* make function getTurnData(authors){
+	turnData: getTurnData(authors),
+	highlight: '',
+};
+// getTurnData(authors)
+/* make function getTurnData(authors){
 			const allBooks = authors.reduce(function(p,c,i){
 				return p.concat(c.books);
 			}, []);
@@ -30,11 +51,28 @@ const state = {
 				author: authors.find((author) => author.books.some((title) => title === answer))
 			}
 		}
-		} */
-		author: authors[0],
-		books: authors[0].books,
-	},
-};
+		} 
+		turnData: {
+			author: authors[0],
+			books: authors[0].books,
+		}
+		*/
+
+function getTurnData(authors) {
+	const allBooks = authors.reduce(function (p, c, i) {
+		return p.concat(c.books);
+	}, []);
+	//  npm install underscore, import shuffle,sample
+	const fourRandomBooks = shuffle(allBooks).slice(0, 4);
+	const answer = sample(fourRandomBooks);
+
+	return {
+		books: fourRandomBooks,
+		author: authors.find((author) =>
+			author.books.some((title) => title === answer)
+		),
+	};
+}
 
 function onAnswerSelected(answer) {
 	const isCorrect = state.turnData.author.books.some((book) => book === answer);
@@ -42,10 +80,28 @@ function onAnswerSelected(answer) {
 	render();
 }
 
+function AddAuthorForm({ match }) {
+	return (
+		<div>
+			<h1>Add Author</h1>
+			<p>{JSON.stringify(match)}</p>
+		</div>
+	);
+}
+
+function App() {
+	return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+}
+
 function render() {
 	ReactDOM.render(
 		<React.StrictMode>
-			<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />
+			<BrowserRouter>
+				<React.Fragment>
+					<Route exact path="/" component={App} />
+					<Route path="/add" component={AddAuthorForm} />
+				</React.Fragment>
+			</BrowserRouter>
 		</React.StrictMode>,
 		document.getElementById('root')
 	);
